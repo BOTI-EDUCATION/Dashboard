@@ -84,7 +84,7 @@ onMounted(async() => {
   }).catch(err=>{
     console.log(err)
   })
-  await axiosIns.get('getInscriptionsByCycles/').then(res=>{
+  await axiosIns.get('getInscriptionsByCycles_/').then(res=>{
     inscriptionsCicleValues.push(
       res.data.cycles[0].inscriptions + res.data.cycles[0].reinscriptions,
       res.data.cycles[1].inscriptions + res.data.cycles[1].reinscriptions,

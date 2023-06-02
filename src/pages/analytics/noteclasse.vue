@@ -166,14 +166,14 @@ watch(async() => (niveau.value),async (first, second) => {
 
 <template>
   <VRow
-    class="justify-center"
+    class="justify-space-between"
   >
     <!-- 👉 Congratulation John -->
 
     <VCol
       v-if="loaded"
       cols="12"
-      md="2"
+      md="3"
     >
       <VSelect
         v-model="cycle"
@@ -195,7 +195,7 @@ watch(async() => (niveau.value),async (first, second) => {
     <VCol
       v-if="loaded"
       cols="12"
-      md="2"
+      md="3"
     >
       <VSelect
         v-model="classe"
@@ -219,11 +219,15 @@ watch(async() => (niveau.value),async (first, second) => {
       cols="12"
       md="2"
     >
-      <VBtn @click="searchEvaluations">
+      <VBtn style="width: 100%;" @click="searchEvaluations">
         Rechercher
       </VBtn>
     </VCol>
-    <VCol
+  </VRow>
+  <VRow
+    class="justify-center"
+  >  
+  <VCol
       cols="12"
       md="5"
       lg="4"
@@ -235,6 +239,8 @@ watch(async() => (niveau.value),async (first, second) => {
         :ins-count="inscriptions_per_classe + ' élèves'"
       />
     </VCol>   
+  
+    
     <!-- 👉 Ecommerce Transition -->
     <VCol
       

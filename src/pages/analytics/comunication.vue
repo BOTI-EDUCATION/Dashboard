@@ -5,8 +5,8 @@ import CommunicationBestPub from "@/views/analytics/communication/CommunicationB
 import CommunicationBestRadial from "@/views/analytics/communication/CommunicationBestRadial.vue"
 import CommunicationHead from "@/views/analytics/communication/CommunicationHead.vue"
 import usFlag from '@images/icons/countries/us.png'
-
 import { endOfMonth, startOfMonth, subMonths } from 'date-fns'
+
 
 let albumsCount = 0
 let messagesCount = 0 
@@ -22,7 +22,7 @@ const datepicker = ref(0)
 
 
 let salesByCountries = []
-const date = ref()
+const date = ref(new Date())
 const startDate = new Date()
 const endDate = new Date(new Date().setDate(startDate.getDate() + 7))
 
@@ -51,7 +51,6 @@ const presetRanges = ref([
   
 ])
 
-console.log(datepicker.value)
 
 onMounted(async() => {
 
@@ -96,6 +95,27 @@ onMounted(async() => {
   })
 })
 
+watch(async() => (date.value),
+  async (first, second) => {
+    if (first && second && first != second ) {
+      await axiosIns.get('communication?date='+date.value).then(res=>{
+        loaded.value = false
+    notesCount = res.data.posts
+    devoirsCount = res.data.devoirs
+    ressCount = res.data.ressources
+    albumsCount= res.data.albums
+    commentCount= res.data.comments
+    reponsesCount= res.data.reponses
+    messagesCount= res.data.messages
+    reclamationCount= res.data.reclamation
+    loaded.value = true
+    }).catch(err=>{
+    console.log(err)
+  })
+    }
+  }
+
+  );
 
 
 
@@ -179,7 +199,7 @@ let changeDateCycle = async ()=>{
       class="d-flex justify-end"
     >
       <VCol
-        v-if="loaded"
+        
         cols="12"
         md="4"
         sm="6"
@@ -187,10 +207,13 @@ let changeDateCycle = async ()=>{
       >
         <div
           class="date-picker-wrapper d-flex"
+          v-if="false"
         >
           <AppDateTimePicker
             v-model="dateCycle"
             range
+            multiple
+            picker-date
             prepend-inner-icon="tabler-calendar"
             density="compact"
             :config="{ position: 'auto right' }"
@@ -198,7 +221,6 @@ let changeDateCycle = async ()=>{
           />
         </div>
         <VueDatePicker
-          v-if="false"
           v-model="date"
           range 
           :preset-ranges="presetRanges"

@@ -13,7 +13,7 @@ const colorVariables = themeColors => {
 }
 
 let primiryValue  = 0 
-axiosIns.get('getInscriptionsByCycles/').then(res=>{
+axiosIns.get('getInscriptionsByCycles_/').then(res=>{
   primiryValue = res.data.cycles[1].inscriptions + res.data.cycles[1].reinscriptions
 }).catch(err=>{
   console.log(err)

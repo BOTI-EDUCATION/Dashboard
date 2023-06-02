@@ -37,7 +37,7 @@ const props = defineProps({
             </VAvatar>
 
             <div class="d-flex flex-column">
-              <span class="text-h6 font-weight-medium">{{ item.stats }}</span>
+              <span class="text-h4 font-weight-medium">{{ item.stats }}</span>
               <span class="text-caption">
                 {{ item.title }}
               </span>
@@ -48,3 +48,13 @@ const props = defineProps({
     </VCardText>
   </VCard>
 </template>
+<style>
+.text-h4 {
+  font-size: 1.7rem !important;
+  font-weight: bold;
+}
+
+.text-caption {
+  font-size: 1rem !important;
+}
+</style>

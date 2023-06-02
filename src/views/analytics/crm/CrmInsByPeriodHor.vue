@@ -1,6 +1,5 @@
 <script setup>
 import BarChart from '@/@core/libs/chartjs/components/BarChart'
-import axiosIns from '@/plugins/axios'
 
 // import { getHorizontalBarChartConfig } from '@core/libs/chartjs/chartjsConfig'
 
@@ -12,33 +11,34 @@ const props = defineProps({
     type: null,
     required: true,
   },
+  weeks: {
+    type: null,
+    required: true,
+  },
+  ins: {
+    type: null,
+    required: true,
+  },
+  reins: {
+    type: null,
+    required: true,
+  },
 })
 
 
 const loaded =ref(false)
-let ins = []
-let reins = []
-let days = []
 let maxValueIns = 0
 let maxValueReins = 0
 let maxValue = 0
 
 onMounted(async () => {
   
-  await axiosIns.get('getInsReinByWeek/').then(res=>{
-    for (let i = 0; i < res.data.days.length; i++) {
-      days.push( res.data.days[i])      
-      ins.push( res.data.ins[i])
-      reins.push( res.data.rein[i])
-    }
-    maxValueIns = Math.max.apply(Math, ins)
-    maxValueReins = Math.max.apply(Math, reins)
+    maxValueIns = Math.max.apply(Math, props.ins)
+    maxValueReins = Math.max.apply(Math, props.reins)
     maxValue = Math.max.apply(Math, [maxValueIns,maxValueReins])
 
     loaded.value = true
-  }).catch(err=>{
-    console.log(err)
-  })
+
 
 })
 
@@ -57,11 +57,8 @@ let newdate = String(day) + '/'+ String(month)
 
 
 const data = {
-  labels: days ,
+  labels: props.weeks ,
 
-  // [
-  //   newdate,
-  // ],
   datasets: [
     {
       maxBarThickness: 15,
@@ -73,7 +70,7 @@ const data = {
         topLeft: 15,
       },
       data:
-        ins
+        props.ins
       ,
     },
     {
@@ -86,7 +83,7 @@ const data = {
         topLeft: 15,
       },
       data: 
-        reins
+        props.reins
       ,
     },
   ],
