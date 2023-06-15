@@ -20,8 +20,6 @@ let series =[]
 onMounted(async() => {
   await axiosIns.get('/getCrmData').then(res=>{
     promotion = res.data.promotion
-
-    // crmTestAdmission =  res.data.count_testes_admission
     crmTestAdmission =  res.data.test_admission_by_result.positif + res.data.test_admission_by_result.negative + res.data.test_admission_by_result.enattente 
     crmAppeles = res.data.count_appeles
     crmVisites = res.data.count_visites

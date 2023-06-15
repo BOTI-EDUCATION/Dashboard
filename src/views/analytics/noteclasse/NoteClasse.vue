@@ -4,28 +4,29 @@ const props = defineProps({
     type: null,
     required: true,
   },
-  promotion : {
-    type :null,
-    required:true,
+  promotion: {
+    type: null,
+    required: true,
   },
-  insCount : {
-    type :null,
-    required:true,
+  insCount: {
+    type: null,
+    required: true,
   },
-})
+});
 
-const leadsLink = ref('')
+const leadsLink = ref("");
 
 onMounted(() => {
-  leadsLink.value = document
-    .querySelector("meta[name=base_api]")
-    .getAttribute("content") + '../'+ 'admin/eleves/'
-})
+  leadsLink.value =
+    document.querySelector("meta[name=base_api]").getAttribute("content") +
+    "../" +
+    "admin/eleves/";
+});
 </script>
 
 <template>
-  <VCard>
-    <VRow no-gutters>
+  <VCard style="height: 100%">
+    <VRow no-gutters style="height: 100%">
       <VCol cols="8">
         <VCardText>
           <h6 class="text-lg text-no-wrap font-weight-semibold">
@@ -37,9 +38,7 @@ onMounted(() => {
           <h5 class="text-h5 font-weight-semibold text-primary mb-2">
             {{ props.insCount }}
           </h5>
-          <VBtn :href="leadsLink">
-            Voir liste des élèves
-          </VBtn>
+          <VBtn :href="leadsLink"> Voir liste des élèves </VBtn>
         </VCardText>
       </VCol>
 
@@ -49,7 +48,7 @@ onMounted(() => {
             src="http://localhost/rr/congo-illustration.png"
             height="140"
             class="w-100 position-absolute"
-            style="bottom: 0;"
+            style="bottom: 0"
           />
         </VCardText>
       </VCol>

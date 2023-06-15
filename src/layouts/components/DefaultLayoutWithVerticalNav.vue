@@ -32,7 +32,6 @@ async function getLinks(){
     console.log(err)
   })
   
-  // return links
 }
 
 getLinks()

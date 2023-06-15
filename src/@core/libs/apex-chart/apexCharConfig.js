@@ -568,6 +568,8 @@ export const getColumnChartNote = (themeColors,categories) => {
     series1: '#826af9',
     series2: '#d2b0ff',
     series3: '#D25380',
+    series4: '#F4FFF8',
+    series5: '#8BAAAD',
     bg: '#f8d3ff',
   }
 
@@ -582,7 +584,7 @@ export const getColumnChartNote = (themeColors,categories) => {
     },
     fill: { opacity: 1 },
     dataLabels: { enabled: false },
-    colors: [columnColors.series1, columnColors.series2,columnColors.series3],
+    colors: [columnColors.series1, columnColors.series2,columnColors.series3 , columnColors.series4,columnColors.series5],
     legend: {
       position: 'top',
       horizontalAlign: 'left',
@@ -638,7 +640,7 @@ export const getColumnChartNote = (themeColors,categories) => {
         options: {
           plotOptions: {
             bar: {
-              columnWidth: '35%',
+              columnWidth: '38%',
             },
           },
         },
