@@ -570,7 +570,7 @@ export const getColumnChartNote = (themeColors,categories) => {
     series3: '#D25380',
     series4: '#F4FFF8',
     series5: '#8BAAAD',
-    bg: '#f8d3ff',
+    bg: '#F4F3FE',
   }
 
   const { themeSecondaryTextColor, themeBorderColor, themeDisabledTextColor } = colorVariables(themeColors)
@@ -605,9 +605,95 @@ export const getColumnChartNote = (themeColors,categories) => {
     plotOptions: {
       bar: {
         columnWidth: '15%',
+
         colors: {
           backgroundBarRadius: 10,
+          backgroundBarColors: [columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg],
+        },
+      },
+    },
+    grid: {
+      borderColor: themeBorderColor,
+      xaxis: {
+        lines: { show: true },
+      },
+    },
+    yaxis: {
+      labels: {
+        style: { colors: themeDisabledTextColor },
+      },
+    },
+    xaxis: {
+      axisBorder: { show: false },
+      axisTicks: { color: themeBorderColor },
+      categories: categories,
+      crosshairs: {
+        stroke: { color: themeBorderColor },
+      },
+      labels: {
+        style: { colors: themeDisabledTextColor },
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 600,
+        options: {
+          plotOptions: {
+            bar: {
+              columnWidth: '38%',
+            },
+          },
+        },
+      },
+    ],
+  }
+}
+export const getColumnChartAbsences = (themeColors,categories , colors) => {
+  const columnColors = {
+    series1: '#F7AD3E',
+    series2: '#FF0000',
+    series3: '#D25380',
+    series4: '#F4FFF8',
+    series5: '#8BAAAD',
+    // bg: '#F4F3FE',
+    bg: '#FFFFFF',
+  }
 
+  const { themeSecondaryTextColor, themeBorderColor, themeDisabledTextColor } = colorVariables(themeColors)
+  
+  return {
+    chart: {
+      offsetX: -10,
+      stacked: true,
+      parentHeightOffset: 0,
+      toolbar: { show: false },
+    },
+    fill: { opacity: 1 },
+    dataLabels: { enabled: false },
+    colors: [colors[0], colors[1],colors[2] , colors[3],colors[4]],
+    legend: {
+      position: 'top',
+      horizontalAlign: 'left',
+      labels: { colors: themeSecondaryTextColor },
+      markers: {
+        offsetY: 1,
+        offsetX: -3,
+      },
+      itemMargin: {
+        vertical: 3,
+        horizontal: 10,
+      },
+    },
+    stroke: {
+      show: true,
+      colors: ['transparent'],
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: '15%',
+
+        colors: {
+          backgroundBarRadius: 10,
           backgroundBarColors: [columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg,columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg, columnColors.bg],
         },
       },

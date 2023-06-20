@@ -374,6 +374,19 @@ let changeDateCycle = async () => {
     <VCol v-if="loaded" cols="12" sm="6" lg="5">
       <CommunicationBestPub :sales-by-countries="salesByCountries" />
     </VCol>
+
+    <VCol
+      v-if="!loaded"
+      cols="12"
+      lg="12"
+      style="position: relative; height: 80vh"
+    >
+      <div class="loading">
+        <div class="effect-1 effects"></div>
+        <div class="effect-2 effects"></div>
+        <div class="effect-3 effects"></div>
+      </div>
+    </VCol>
   </VRow>
 </template>
 

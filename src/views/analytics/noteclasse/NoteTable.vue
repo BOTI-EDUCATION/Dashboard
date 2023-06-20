@@ -16,26 +16,33 @@ const props = defineProps({
     type: null,
     required: true,
   },
+  tbody: {
+    type: null,
+    required: true,
+  },
 });
 
-// 👉 Fetch Invoices
-watchEffect(() => {
-  invoiceListStore
-    .fetchInvoices({
-      q: searchQuery.value,
-      status: selectedStatus.value,
-      perPage: rowPerPage.value,
-      currentPage: currentPage.value,
-    })
-    .then((response) => {
-      invoices.value = response.data.invoices;
-      totalPage.value = response.data.totalPage;
-      totalInvoices.value = response.data.totalInvoices;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
+onMounted(() => {
+  console.log(props.tbody);
+}),
+  // 👉 Fetch Invoices
+  watchEffect(() => {
+    invoiceListStore
+      .fetchInvoices({
+        q: searchQuery.value,
+        status: selectedStatus.value,
+        perPage: rowPerPage.value,
+        currentPage: currentPage.value,
+      })
+      .then((response) => {
+        invoices.value = response.data.invoices;
+        totalPage.value = response.data.totalPage;
+        totalInvoices.value = response.data.totalInvoices;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 
 // 👉 Fetch Invoices
 watchEffect(() => {
@@ -117,28 +124,15 @@ const resolveInvoiceStatusVariantAndIcon = (status) => {
 
       <div class="d-flex align-center flex-wrap gap-2">
         <!-- 👉 Search  -->
-        <div class="invoice-list-search">
+        <div class="invoice-list-search d-none">
           <VTextField
             v-model="searchQuery"
             placeholder="Search éléve"
             density="compact"
           />
         </div>
-        <div class="invoice-list-status d-none">
-          <VSelect
-            v-model="selectedStatus"
-            label="Select Status"
-            clearable
-            clear-icon="tabler-x"
-            density="compact"
-            :items="[
-              'Downloaded',
-              'Draft',
-              'Paid',
-              'Partial Payment',
-              'Past Due',
-            ]"
-          />
+        <div class="invoice-list-status" style="font-size: 20px">
+          Notes des éléves
         </div>
       </div>
     </VCardText>
@@ -150,6 +144,7 @@ const resolveInvoiceStatusVariantAndIcon = (status) => {
       <!-- 👉 Table head -->
       <thead>
         <tr>
+          <th scope="col" class="font-weight-semibold">Eléve</th>
           <th
             v-for="value in props.thead"
             :key="value"
@@ -163,114 +158,20 @@ const resolveInvoiceStatusVariantAndIcon = (status) => {
           </th> -->
         </tr>
       </thead>
-
+      <!-- <RouterLink
+              :to="{
+                name: 'apps-invoice-preview-id',
+                params: { id: invoice.id },
+              }"
+            >
+            </RouterLink> -->
       <!-- 👉 Table Body -->
-      <tbody v-show="false">
-        <tr v-for="invoice in invoices" :key="invoice.id">
+      <!-- {{ props.tbody }} -->
+      <tbody v-if="props.tbody">
+        <tr v-for="(t, index) in props.tbody" :key="index">
           <!-- 👉 Id -->
-          <td>
-            <RouterLink
-              :to="{
-                name: 'apps-invoice-preview-id',
-                params: { id: invoice.id },
-              }"
-            >
-            </RouterLink>
-            {{ invoice.id }}
-          </td>
-
-          <!-- 👉 Trending -->
-          <td>
-            <VTooltip>
-              <template #activator="{ props }">
-                <VAvatar
-                  :size="30"
-                  v-bind="props"
-                  :color="
-                    resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus)
-                      .variant
-                  "
-                  variant="tonal"
-                >
-                  <VIcon
-                    :size="20"
-                    :icon="
-                      resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus)
-                        .icon
-                    "
-                  />
-                </VAvatar>
-              </template>
-              <p class="mb-0">
-                {{ invoice.invoiceStatus }}
-              </p>
-              <p class="mb-0">Balance: {{ invoice.balance }}</p>
-              <p class="mb-0">Due date: {{ invoice.dueDate }}</p>
-            </VTooltip>
-          </td>
-
-          <!-- 👉 total -->
-          <td class="text-center text-medium-emphasis">${{ invoice.total }}</td>
-
-          <!-- 👉 Date -->
-          <td class="text-center text-medium-emphasis">
-            {{ invoice.issuedDate }}
-          </td>
-
-          <!-- 👉 Actions -->
-          <td style="width: 7.5rem">
-            <VBtn icon variant="plain" color="default" size="x-small">
-              <VIcon icon="tabler-mail" :size="22" />
-            </VBtn>
-
-            <VBtn
-              icon
-              variant="plain"
-              color="default"
-              size="x-small"
-              :to="{
-                name: 'apps-invoice-preview-id',
-                params: { id: invoice.id },
-              }"
-            >
-              <VIcon :size="22" icon="tabler-eye" />
-            </VBtn>
-
-            <VBtn icon variant="plain" color="default" size="x-small">
-              <VIcon :size="22" icon="tabler-dots-vertical" />
-              <VMenu activator="parent">
-                <VList density="compact">
-                  <VListItem value="Download">
-                    <template #prepend>
-                      <VIcon size="22" class="me-3" icon="tabler-download" />
-                    </template>
-
-                    <VListItemTitle>Download</VListItemTitle>
-                  </VListItem>
-
-                  <VListItem
-                    :to="{
-                      name: '/apps/invoice/edit/[id]',
-                      params: { id: invoice.id },
-                    }"
-                  >
-                    <template #prepend>
-                      <VIcon size="22" class="me-3" icon="tabler-pencil" />
-                    </template>
-
-                    <VListItemTitle>Edit</VListItemTitle>
-                  </VListItem>
-                  <VListItem value="Duplicate">
-                    <template #prepend>
-                      <VIcon size="22" class="me-3" icon="tabler-stack" />
-                    </template>
-
-                    <VListItemTitle>Duplicate</VListItemTitle>
-                  </VListItem>
-                </VList>
-              </VMenu>
-            </VBtn>
-          </td>
+          <td>{{ t[0].eleve }}</td>
+          <td v-for="(td, index) in t" :key="index">{{ td.note }}</td>
         </tr>
       </tbody>
 

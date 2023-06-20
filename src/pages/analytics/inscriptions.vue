@@ -52,7 +52,7 @@ let levels_ins_labels = [];
 let levels_ins_count = [];
 let level_ins_labels_com = [""];
 let ins_count_com = ref([]);
-let reins_count_com =ref( []);
+let reins_count_com = ref([]);
 let sites = [];
 let site = ref();
 let dataSates = {
@@ -79,9 +79,10 @@ let weeks = [];
 let ins = [];
 let reins = [];
 
-watch(async() => (site.value),
+watch(
+  async () => site.value,
   async (first, second) => {
-    if (first && second && first != second ) {
+    if (first && second && first != second) {
       let link = "/inscriptions_?site=" + site.value;
       await axiosIns
         .get(link)
@@ -180,8 +181,7 @@ watch(async() => (site.value),
       loaded.value = true;
     }
   }
-
-  );
+);
 
 onMounted(async () => {
   await axiosIns
@@ -433,6 +433,17 @@ const setData = (res) => {
         </VCardText>
       </VCard>
     </VCol>
+    <VCol
+      v-if="!loaded"
+      cols="12"
+      lg="12"
+      style="position: relative; height: 80vh"
+    >
+      <div class="loading">
+        <div class="effect-1 effects"></div>
+        <div class="effect-2 effects"></div>
+        <div class="effect-3 effects"></div>
+      </div>
+    </VCol>
   </VRow>
 </template>
-

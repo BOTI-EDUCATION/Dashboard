@@ -52,6 +52,10 @@ let statistics = ref([
 let evsData = [];
 let series = ref([
   {
+    name: "notées",
+    data: [],
+  },
+  {
     name: "Programmé",
     data: [],
   },
@@ -61,10 +65,6 @@ let series = ref([
   },
   {
     name: "passés",
-    data: [],
-  },
-  {
-    name: "a notées",
     data: [],
   },
 ]);
@@ -101,7 +101,9 @@ let rens_contr_note = 0;
 let rens_contr_not_note = 0;
 let rens_move = ref([0]);
 
-let thead = ref(["éléve", "cc 1", "cc 2", "Evolution"]);
+// "Evolution"
+let thead = ref([]);
+let tbody = ref([]);
 
 let supportTicket = [
   {
@@ -182,11 +184,11 @@ onMounted(async () => {
       supportTicket[1].subtitle = rens_contr_pass;
       supportTicket[2].subtitle = rens_contr_not_note;
 
-      series.value[0].data = prog;
-      series.value[1].data = plan;
+      series.value[0].data = notee;
+      series.value[1].data = prog;
 
-      series.value[2].data = pass;
-      series.value[3].data = notee;
+      series.value[2].data = plan;
+      series.value[3].data = pass;
 
       for (const unite_litt in res.data.unites) {
         for (let i = 0; i < res.data.unites[unite_litt].length; i++) {
@@ -306,11 +308,11 @@ const searchEvaluations = async () => {
       supportTicket[1].subtitle = 0;
       supportTicket[2].subtitle = rens_contr_not_note;
 
-      series.value[0].data = prog;
-      series.value[1].data = plan;
+      series.value[0].data = notee;
+      series.value[1].data = prog;
 
-      series.value[2].data = pass;
-      series.value[3].data = notee;
+      series.value[2].data = plan;
+      series.value[3].data = pass;
       classe_.value = classe.value;
 
       const currentTheme = vuetifyTheme.current.value.colors;
@@ -401,10 +403,20 @@ async function searchUnites() {
       supportTicket[1].subtitle = rens_contr_pass;
       supportTicket[2].subtitle = rens_contr_not_note;
 
-      series.value[0].data = prog;
-      series.value[1].data = plan;
-      series.value[2].data = pass;
-      series.value[3].data = notee;
+      series.value[0].data = notee;
+      series.value[1].data = prog;
+
+      series.value[2].data = plan;
+      series.value[3].data = pass;
+
+      thead.value = [];
+      tbody.value = [];
+      for (let i = 0; i < res.data.evaluation_controles_number.length; i++) {
+        thead.value.push(res.data.evaluation_controles_number[i]);
+      }
+      for (const property in res.data.evaluation_notes_number) {
+        tbody.value.push(res.data.evaluation_notes_number[property]);
+      }
 
       loaded.value = true;
     })
@@ -526,11 +538,14 @@ watch(
       </VCol>
 
       <!-- 👉 Ecommerce Transition -->
-      <VCol cols="12" md="7" lg="8">
+      <VCol v-if="loaded" cols="12" md="7" lg="8">
         <NoteAction v-if="loaded" class="h-100" :statistics="statistics" />
       </VCol>
     </VRow>
-    <VCard style="height: 100px; padding: 10px" class="mb-3 mt-4 sticky-nav-2">
+    <VCard
+      class="mb-3 mt-4 sticky-nav"
+      style="height: 100px; padding: 10px; inset-block-start: 125px"
+    >
       <VRow>
         <VCol
           v-if="loaded"
@@ -568,7 +583,7 @@ watch(
     </VCard>
     <VRow>
       <!-- 👉 Data Science -->
-      <VCol v-if="loaded && series" cols="12" md="6">
+      <VCol v-if="loaded && series" cols="12" md="6" style="position: relative">
         <VCard>
           <VCardText>
             <ApexNoteChartDataScience
@@ -581,19 +596,20 @@ watch(
       </VCol>
 
       <VCol v-if="loaded && rens_move" cols="12" md="6">
-        <div style="height: 100%">
+        <div style="position: relative; height: 100%">
           <AnalyticsNoteSupportTracker
+            v-if="loaded && rens_move"
             :rens="rens_move"
             :loaded="loaded"
-            v-if="loaded && rens_move"
             :supportticket="supportTicket"
             :controles_pass="rens_contr_pass"
           />
         </div>
       </VCol>
+
       <!-- 👉 Earning Reports -->
       <VCol v-if="loaded && maxValues" cols="12" md="12" id="ev_note">
-        <div>
+        <div style="position: relative">
           <NoteMinMax
             v-if="loaded && maxValues"
             :matieres="maxValues"
@@ -601,8 +617,21 @@ watch(
           />
         </div>
       </VCol>
-      <VCol cols="12" lg="12" v-show="false">
-        <NoteTable :thead="thead" />
+      <!--  -->
+      <VCol cols="12" lg="12" v-if="loaded && thead">
+        <NoteTable :thead="thead" :tbody="tbody" />
+      </VCol>
+      <VCol
+        v-if="!loaded"
+        cols="12"
+        lg="12"
+        style="position: relative; height: 80vh"
+      >
+        <div class="loading">
+          <div class="effect-1 effects"></div>
+          <div class="effect-2 effects"></div>
+          <div class="effect-3 effects"></div>
+        </div>
       </VCol>
     </VRow>
   </div>

@@ -1,6 +1,5 @@
 <script setup>
 import axiosIns from "@/plugins/axios";
-import { hexToRgb } from "@layouts/utils";
 import VueApexCharts from "vue3-apexcharts";
 import { useTheme } from "vuetify";
 
@@ -85,7 +84,12 @@ watch(
               enabled: true,
               enabledOnSeries: labels_series,
             },
-            labels: ["01 Jan 2001", "02 Jan 2001", "03 Jan 2001", "04 Jan 2001"],
+            labels: [
+              "01 Jan 2001",
+              "02 Jan 2001",
+              "03 Jan 2001",
+              "04 Jan 2001",
+            ],
             xaxis: {
               type: "datetime",
             },
@@ -125,7 +129,7 @@ watch(
   <VCard title="Évolution des notes">
     <template #append>
       <div class="mt-n4 me-n2" style="min-width: 120px">
-        <VSelect
+        <v-autocomplete
           v-model="unite"
           :items="unites"
           :item-title="(unite) => unite.label"

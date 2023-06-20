@@ -13,7 +13,7 @@ const props = defineProps({
     required: true,
   },
 });
-let colors = ["#57D38E", "#7367F0", "#0AD1E9", "#D25380", , "#8BAAAD"];
+let colors = ["#F7AD3E", "#FF0000"];
 
 const vuetifyTheme = useTheme();
 const chartConfig = computed(() =>
