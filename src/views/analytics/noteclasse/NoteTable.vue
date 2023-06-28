@@ -22,9 +22,9 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
-  console.log(props.tbody);
-}),
+let tbodys = [];
+
+onMounted(() => {}),
   // 👉 Fetch Invoices
   watchEffect(() => {
     invoiceListStore
@@ -153,25 +153,34 @@ const resolveInvoiceStatusVariantAndIcon = (status) => {
           >
             {{ value }}
           </th>
-          <!-- <th scope="col" class="font-weight-semibold d-none">
-            <VIcon icon="tabler-trending-up" />
-          </th> -->
+          <th v-show="false">actions</th>
         </tr>
       </thead>
-      <!-- <RouterLink
-              :to="{
-                name: 'apps-invoice-preview-id',
-                params: { id: invoice.id },
-              }"
-            >
-            </RouterLink> -->
-      <!-- 👉 Table Body -->
-      <!-- {{ props.tbody }} -->
       <tbody v-if="props.tbody">
         <tr v-for="(t, index) in props.tbody" :key="index">
           <!-- 👉 Id -->
           <td>{{ t[0].eleve }}</td>
-          <td v-for="(td, index) in t" :key="index">{{ td.note }}</td>
+          <td v-for="(td, index) in t" :key="index">
+            <span>{{ td.note }}</span>
+            <span class="ml-1" v-if="index > 0 && td.icon"
+              ><VIcon icon="tabler-trending-up" style="color: rgb(70, 207, 70)"
+            /></span>
+            <span class="ml-1" v-else-if="index > 0 && !td.icon"
+              ><VIcon icon="tabler-trending-down" style="color: red"
+            /></span>
+          </td>
+          <td v-show="false">
+            <vbutton>
+              <RouterLink
+                :to="{
+                  name: 'apps-invoice-preview-id',
+                  params: { id: 1 },
+                }"
+              >
+                Analyser
+              </RouterLink>
+            </vbutton>
+          </td>
         </tr>
       </tbody>
 

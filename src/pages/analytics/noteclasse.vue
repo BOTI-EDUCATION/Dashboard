@@ -241,9 +241,10 @@ onMounted(async () => {
       console.log(err);
     });
 });
+// "&unite_litt=" +
+//     unite.value +
 const vuetifyTheme = useTheme();
 const currentTheme = vuetifyTheme.current.value.colors;
-
 const searchEvaluations = async () => {
   matieres_ = [];
   let link =
@@ -253,8 +254,6 @@ const searchEvaluations = async () => {
     niveau.value +
     "&semestre=" +
     semestre.value +
-    "&unite_litt=" +
-    unite.value +
     "&matiere_litt=" +
     matiere.value;
   await axiosIns
