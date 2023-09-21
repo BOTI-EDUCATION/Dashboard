@@ -1,116 +1,115 @@
 <script setup>
-import { useInvoiceStore } from '@/views/apps/invoice/useInvoiceStore'
-import { avatarText } from '@core/utils/formatters'
+import { useInvoiceStore } from "@/views/apps/invoice/useInvoiceStore";
+import { avatarText } from "@core/utils/formatters";
 
-const invoiceListStore = useInvoiceStore()
-const searchQuery = ref('')
-const selectedStatus = ref()
-const rowPerPage = ref(10)
-const currentPage = ref(1)
-const totalPage = ref(1)
-const totalInvoices = ref(0)
-const invoices = ref([])
-const selectedRows = ref([])
-
-// 👉 Fetch Invoices
-watchEffect(() => {
-  invoiceListStore.fetchInvoices({
-    q: searchQuery.value,
-    status: selectedStatus.value,
-    perPage: rowPerPage.value,
-    currentPage: currentPage.value,
-  }).then(response => {
-    invoices.value = response.data.invoices
-    totalPage.value = response.data.totalPage
-    totalInvoices.value = response.data.totalInvoices
-  }).catch(error => {
-    console.log(error)
-  })
-})
+const invoiceListStore = useInvoiceStore();
+const searchQuery = ref("");
+const selectedStatus = ref();
+const rowPerPage = ref(10);
+const currentPage = ref(1);
+const totalPage = ref(1);
+const totalInvoices = ref(0);
+const invoices = ref([]);
+const selectedRows = ref([]);
 
 // 👉 Fetch Invoices
 watchEffect(() => {
-  if (currentPage.value > totalPage.value)
-    currentPage.value = totalPage.value
-})
+  invoiceListStore
+    .fetchInvoices({
+      q: searchQuery.value,
+      status: selectedStatus.value,
+      perPage: rowPerPage.value,
+      currentPage: currentPage.value,
+    })
+    .then((response) => {
+      invoices.value = response.data.invoices;
+      totalPage.value = response.data.totalPage;
+      totalInvoices.value = response.data.totalInvoices;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+// 👉 Fetch Invoices
+watchEffect(() => {
+  if (currentPage.value > totalPage.value) currentPage.value = totalPage.value;
+});
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = invoices.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = invoices.value.length + (currentPage.value - 1) * rowPerPage.value
-  
-  return `Showing ${ firstIndex } to ${ lastIndex } of ${ totalInvoices.value } entries`
-})
+  const firstIndex = invoices.value.length
+    ? (currentPage.value - 1) * rowPerPage.value + 1
+    : 0;
+  const lastIndex =
+    invoices.value.length + (currentPage.value - 1) * rowPerPage.value;
+
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalInvoices.value} entries`;
+});
 
 // 👉 Invoice balance variant resolver
 const resolveInvoiceBalanceVariant = (balance, total) => {
   if (balance === total)
     return {
-      status: 'Unpaid',
-      chip: { color: 'error' },
-    }
+      status: "Unpaid",
+      chip: { color: "error" },
+    };
   if (balance === 0)
     return {
-      status: 'Paid',
-      chip: { color: 'success' },
-    }
-  
+      status: "Paid",
+      chip: { color: "success" },
+    };
+
   return {
     status: balance,
-    chip: { variant: 'text' },
-  }
-}
+    chip: { variant: "text" },
+  };
+};
 
-const resolveInvoiceStatusVariantAndIcon = status => {
-  if (status === 'Partial Payment')
+const resolveInvoiceStatusVariantAndIcon = (status) => {
+  if (status === "Partial Payment")
     return {
-      variant: 'success',
-      icon: 'tabler-circle-half-2',
-    }
-  if (status === 'Paid')
+      variant: "success",
+      icon: "tabler-circle-half-2",
+    };
+  if (status === "Paid")
     return {
-      variant: 'warning',
-      icon: 'tabler-chart-pie',
-    }
-  if (status === 'Downloaded')
+      variant: "warning",
+      icon: "tabler-chart-pie",
+    };
+  if (status === "Downloaded")
     return {
-      variant: 'info',
-      icon: 'tabler-arrow-down-circle',
-    }
-  if (status === 'Draft')
+      variant: "info",
+      icon: "tabler-arrow-down-circle",
+    };
+  if (status === "Draft")
     return {
-      variant: 'primary',
-      icon: 'tabler-device-floppy',
-    }
-  if (status === 'Sent')
+      variant: "primary",
+      icon: "tabler-device-floppy",
+    };
+  if (status === "Sent")
     return {
-      variant: 'secondary',
-      icon: 'tabler-circle-check',
-    }
-  if (status === 'Past Due')
+      variant: "secondary",
+      icon: "tabler-circle-check",
+    };
+  if (status === "Past Due")
     return {
-      variant: 'error',
-      icon: 'tabler-alert-circle',
-    }
-  
+      variant: "error",
+      icon: "tabler-alert-circle",
+    };
+
   return {
-    variant: 'secondary',
-    icon: 'tabler-x',
-  }
-}
+    variant: "secondary",
+    icon: "tabler-x",
+  };
+};
 </script>
 
 <template>
-  <VCard
-    v-if="invoices"
-    id="invoice-list"
-  >
+  <VCard v-if="invoices" id="invoice-list">
     <VCardText class="d-flex align-center flex-wrap gap-4">
       <!-- 👉 Rows per page -->
-      <div
-        class="d-flex align-center"
-        style="width: 135px;"
-      >
+      <div class="d-flex align-center" style="width: 135px">
         <span class="text-no-wrap me-3">Show:</span>
         <VSelect
           v-model="rowPerPage"
@@ -121,10 +120,7 @@ const resolveInvoiceStatusVariantAndIcon = status => {
 
       <div class="me-3">
         <!-- 👉 Create invoice -->
-        <VBtn
-          prepend-icon="tabler-plus"
-          :to="{ name: 'apps-invoice-add' }"
-        >
+        <VBtn prepend-icon="tabler-plus" :to="{ name: 'apps-invoice-add' }">
           Create invoice
         </VBtn>
       </div>
@@ -149,7 +145,14 @@ const resolveInvoiceStatusVariantAndIcon = status => {
             clearable
             clear-icon="tabler-x"
             single-line
-            :items="['Downloaded', 'Draft', 'Sent', 'Paid', 'Partial Payment', 'Past Due']"
+            :items="[
+              'Downloaded',
+              'Draft',
+              'Sent',
+              'Paid',
+              'Partial Payment',
+              'Past Due',
+            ]"
           />
         </div>
       </div>
@@ -162,41 +165,20 @@ const resolveInvoiceStatusVariantAndIcon = status => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-          <th scope="col">
-            #ID
-          </th>
-          <th
-            scope="col"
-            class="text-center"
-          >
+          <th scope="col">#ID</th>
+          <th scope="col" class="text-center">
             <VIcon icon="tabler-trending-up" />
           </th>
 
-          <th scope="col">
-            CLIENT
-          </th>
+          <th scope="col">CLIENT</th>
 
-          <th
-            scope="col"
-            class="text-center"
-          >
-            TOTAL
-          </th>
+          <th scope="col" class="text-center">TOTAL</th>
 
-          <th scope="col">
-            Issued Date
-          </th>
+          <th scope="col">Issued Date</th>
 
-          <th
-            scope="col"
-            class="text-center"
-          >
-            BALANCE
-          </th>
+          <th scope="col" class="text-center">BALANCE</th>
 
-          <th scope="col">
-            ACTIONS
-          </th>
+          <th scope="col">ACTIONS</th>
         </tr>
       </thead>
 
@@ -205,11 +187,16 @@ const resolveInvoiceStatusVariantAndIcon = status => {
         <tr
           v-for="invoice in invoices"
           :key="invoice.id"
-          style="height: 3.75rem;"
+          style="height: 3.75rem"
         >
           <!-- 👉 Id -->
           <td>
-            <RouterLink :to="{ name: 'apps-invoice-preview-id', params: { id: invoice.id } }">
+            <RouterLink
+              :to="{
+                name: 'apps-invoice-preview-id',
+                params: { id: invoice.id },
+              }"
+            >
               #{{ invoice.id }}
             </RouterLink>
           </td>
@@ -221,12 +208,18 @@ const resolveInvoiceStatusVariantAndIcon = status => {
                 <VAvatar
                   :size="30"
                   v-bind="props"
-                  :color="resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus).variant"
+                  :color="
+                    resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus)
+                      .variant
+                  "
                   variant="tonal"
                 >
                   <VIcon
                     :size="20"
-                    :icon="resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus).icon"
+                    :icon="
+                      resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus)
+                        .icon
+                    "
                   />
                 </VAvatar>
               </template>
@@ -234,12 +227,8 @@ const resolveInvoiceStatusVariantAndIcon = status => {
               <p class="mb-0">
                 {{ invoice.invoiceStatus }}
               </p>
-              <p class="mb-0">
-                Balance: {{ invoice.balance }}
-              </p>
-              <p class="mb-0">
-                Due date: {{ invoice.dueDate }}
-              </p>
+              <p class="mb-0">Balance: {{ invoice.balance }}</p>
+              <p class="mb-0">Due date: {{ invoice.dueDate }}</p>
             </VTooltip>
           </td>
 
@@ -248,14 +237,14 @@ const resolveInvoiceStatusVariantAndIcon = status => {
             <div class="d-flex align-center">
               <VAvatar
                 size="34"
-                :color="resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus).variant"
+                :color="
+                  resolveInvoiceStatusVariantAndIcon(invoice.invoiceStatus)
+                    .variant
+                "
                 variant="tonal"
                 class="me-3"
               >
-                <VImg
-                  v-if="invoice.avatar.length"
-                  :src="invoice.avatar"
-                />
+                <VImg v-if="invoice.avatar.length" :src="invoice.avatar" />
                 <span v-else>{{ avatarText(invoice.client.name) }}</span>
               </VAvatar>
 
@@ -263,15 +252,15 @@ const resolveInvoiceStatusVariantAndIcon = status => {
                 <h6 class="text-base font-weight-medium mb-0">
                   {{ invoice.client.name }}
                 </h6>
-                <span class="text-disabled text-sm">{{ invoice.client.companyEmail }}</span>
+                <span class="text-disabled text-sm">{{
+                  invoice.client.companyEmail
+                }}</span>
               </div>
             </div>
           </td>
 
           <!-- 👉 total -->
-          <td class="text-center">
-            ${{ invoice.total }}
-          </td>
+          <td class="text-center">${{ invoice.total }}</td>
 
           <!-- 👉 Date -->
           <td>{{ invoice.issuedDate }}</td>
@@ -280,25 +269,23 @@ const resolveInvoiceStatusVariantAndIcon = status => {
           <td class="text-center">
             <VChip
               label
-              v-bind="resolveInvoiceBalanceVariant(invoice.balance, invoice.total).chip"
+              v-bind="
+                resolveInvoiceBalanceVariant(invoice.balance, invoice.total)
+                  .chip
+              "
               size="small"
             >
-              {{ resolveInvoiceBalanceVariant(invoice.balance, invoice.total).status }}
+              {{
+                resolveInvoiceBalanceVariant(invoice.balance, invoice.total)
+                  .status
+              }}
             </VChip>
           </td>
 
           <!-- 👉 Actions -->
-          <td style="width: 8rem;">
-            <VBtn
-              icon
-              variant="text"
-              color="default"
-              size="x-small"
-            >
-              <VIcon
-                icon="tabler-mail"
-                :size="22"
-              />
+          <td style="width: 8rem">
+            <VBtn icon variant="text" color="default" size="x-small">
+              <VIcon icon="tabler-mail" :size="22" />
             </VBtn>
 
             <VBtn
@@ -306,57 +293,42 @@ const resolveInvoiceStatusVariantAndIcon = status => {
               variant="text"
               color="default"
               size="x-small"
-              :to="{ name: 'apps-invoice-preview-id', params: { id: invoice.id } }"
+              :to="{
+                name: 'apps-invoice-preview-id',
+                params: { id: invoice.id },
+              }"
             >
-              <VIcon
-                :size="22"
-                icon="tabler-eye"
-              />
+              <VIcon :size="22" icon="tabler-eye" />
             </VBtn>
 
-            <VBtn
-              icon
-              variant="text"
-              color="default"
-              size="x-small"
-            >
-              <VIcon
-                :size="22"
-                icon="tabler-dots-vertical"
-              />
+            <VBtn icon variant="text" color="default" size="x-small">
+              <VIcon :size="22" icon="tabler-dots-vertical" />
 
               <VMenu activator="parent">
                 <VList>
                   <VListItem value="download">
                     <template #prepend>
-                      <VIcon
-                        size="24"
-                        class="me-3"
-                        icon="tabler-download"
-                      />
+                      <VIcon size="24" class="me-3" icon="tabler-download" />
                     </template>
 
                     <VListItemTitle>Download</VListItemTitle>
                   </VListItem>
 
-                  <VListItem :to="{ name: 'apps-invoice-edit-id', params: { id: invoice.id } }">
+                  <VListItem
+                    :to="{
+                      name: 'apps-invoice-edit-id',
+                      params: { id: invoice.id },
+                    }"
+                  >
                     <template #prepend>
-                      <VIcon
-                        size="24"
-                        class="me-3"
-                        icon="tabler-pencil"
-                      />
+                      <VIcon size="24" class="me-3" icon="tabler-pencil" />
                     </template>
 
                     <VListItemTitle>Edit</VListItemTitle>
                   </VListItem>
                   <VListItem value="duplicate">
                     <template #prepend>
-                      <VIcon
-                        size="24"
-                        class="me-3"
-                        icon="tabler-stack"
-                      />
+                      <VIcon size="24" class="me-3" icon="tabler-stack" />
                     </template>
 
                     <VListItemTitle>Duplicate</VListItemTitle>
@@ -371,12 +343,7 @@ const resolveInvoiceStatusVariantAndIcon = status => {
       <!-- 👉 table footer  -->
       <tfoot v-show="!invoices.length">
         <tr>
-          <td
-            colspan="8"
-            class="text-center text-body-1"
-          >
-            No data available
-          </td>
+          <td colspan="8" class="text-center text-body-1">No data available</td>
         </tr>
       </tfoot>
     </VTable>

@@ -39,23 +39,10 @@ let unites = ref([]);
 let unite = ref(null);
 
 let months_ = ref([]);
-// let months_ = ref([
-//   "Jan",
-//   "Feb",
-//   "Mar",
-//   "Apr",
-//   "May",
-//   "Jun",
-//   "Jul",
-//   "Aug",
-//   "Sep",
-// ]);
-let positifs_ = [];
-// let positifs = ref([11, 24, 56, 1, 2, 55, 44, 69, 10, 22, 33, 44]);
+ 
+let positifs_ = []; 
 let negatives_ = [];
-// let negatives = ref([
-//   -56, -22, -12, 36, -11, -20, -11, -22, -10, -55, -17, -99,
-// ]);
+ 
 
 let matieres = ref([]);
 let matiere = ref(null);

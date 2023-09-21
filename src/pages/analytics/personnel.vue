@@ -4,7 +4,7 @@
 import axiosIns from "@/plugins/axios";
 import CommunicationHead from "@/views/analytics/communication/CommunicationHead.vue";
 import PersonnelDonutChart from "@/views/analytics/personnel/PersonnelDonutChart.vue";
-
+import imgEmpty from "@/pages/components/imgEmpty.vue";
 let insCount = 0;
 let teachersCount = 0;
 let classesCount = 0;
@@ -230,10 +230,14 @@ let sexColors = {
         </VCardItem>
         <VCardText>
           <PersonnelDonutChart
+            v-if="inscriptionsCicleLabels.length > 0"
             :colors="mainColors"
             :series-values="inscriptionsCicleValues"
             :series-labels="inscriptionsCicleLabels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -244,10 +248,14 @@ let sexColors = {
         </VCardItem>
         <VCardText>
           <PersonnelDonutChart
+            v-if="inscriptionsGenderLabels.length > 0"
             :colors="sexColors"
             :series-values="inscriptionsGenderValues"
             :series-labels="inscriptionsGenderLabels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -258,10 +266,14 @@ let sexColors = {
         </VCardItem>
         <VCardText>
           <PersonnelDonutChart
+            v-if="inscriptionsSiteLabels.length > 0"
             :colors="mainColors"
             :series-values="inscriptionsSiteValues"
             :series-labels="inscriptionsSiteLabels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -272,10 +284,14 @@ let sexColors = {
         </VCardItem>
         <VCardText>
           <PersonnelDonutChart
+            v-if="ensUnitesLabels.length > 0"
             :colors="mainColors"
             :series-values="ensUnitesValues"
             :series-labels="ensUnitesLabels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -286,10 +302,14 @@ let sexColors = {
         </VCardItem>
         <VCardText>
           <PersonnelDonutChart
+            v-if="ensCycleLabels.length > 0"
             :colors="mainColors"
             :series-values="ensCycleValues"
             :series-labels="ensCycleLabels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -300,10 +320,14 @@ let sexColors = {
         </VCardItem>
         <VCardText>
           <PersonnelDonutChart
+            v-if="ensGenderLabels.length > 0"
             :colors="sexColors"
             :series-values="ensGenderValues"
             :series-labels="ensGenderLabels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -332,10 +356,14 @@ let sexColors = {
         </VCardItem>
         <VCardText>
           <PersonnelDonutChart
+            v-if="teamFunctionLabels.length > 0"
             :colors="mainColors"
             :series-values="teamFunctionValues"
             :series-labels="teamFunctionLabels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>

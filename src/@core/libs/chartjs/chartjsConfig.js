@@ -76,7 +76,7 @@ export const getHorizontalBarChartConfig = themeColors => {
     },
     scales: {
       x: {
-        min: 0,
+        // min: 0,
         grid: {
           drawTicks: false,
           drawBorder: false,

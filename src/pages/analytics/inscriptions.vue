@@ -1,4 +1,5 @@
 <script setup>
+import imgEmpty from "@/pages/components/imgEmpty.vue";
 import axiosIns from "@/plugins/axios";
 import CrmInsByPeriodHor from "@/views/analytics/crm/CrmInsByPeriodHor.vue";
 import InsByLevelChartJsHorizontalBarChart from "@/views/analytics/inscriptions/InsByLevelChartJsHorizontalBarChart.vue";
@@ -11,7 +12,6 @@ import InscriptionsCountCharts from "@/views/analytics/inscriptions/Inscriptions
 import ProspectsCountCharts from "@/views/analytics/inscriptions/ProspectsCountCharts.vue";
 import ReinsInsTotalCountCharts from "@/views/analytics/inscriptions/ReinsInsTotalCountCharts.vue";
 import ReinscriptionsCountCharts from "@/views/analytics/inscriptions/ReinscriptionsCountCharts.vue";
-
 const chartJsCustomColors = {
   white: "#fff",
   yellow: "#ffe802",
@@ -336,9 +336,13 @@ const setData = (res) => {
       <VCard title="Comparaison des inscriptions et réinscriptions">
         <VCardText>
           <InsChartJsPolarAreaChart
+            v-if="dataSates"
             :dataanl="dataSates"
             :colors="chartJsCustomColors"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -350,9 +354,13 @@ const setData = (res) => {
         </VCardItem>
         <VCardText>
           <InsChartJsBarChart
+            v-if="seriesValues"
             :colors="chartJsCustomColors"
             :series-values="seriesValues"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -365,11 +373,15 @@ const setData = (res) => {
         </VCardItem>
         <VCardText>
           <InsReinsChartJsHorizontalBarChart
+            v-if="level_ins_labels.length > 0"
             :colors="chartJsCustomColors"
             :level-ins-count="level_ins_count"
             :level-reins-count="level_reins_count"
             :level-ins-labels="level_ins_labels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -381,10 +393,14 @@ const setData = (res) => {
         </VCardItem>
         <VCardText>
           <InsByLevelChartJsHorizontalBarChart
+            v-if="levels_ins_labels.length > 0"
             :colors="chartJsCustomColors"
             :level-ins-count="levels_ins_count"
             :level-ins-labels="levels_ins_labels"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -398,11 +414,15 @@ const setData = (res) => {
         </VCardItem>
         <VCardText>
           <InsReinsComparaison
+            v-if="level_ins_labels_com.length > 0"
             :colors="chartJsCustomColors"
             :ins-count="ins_count_com"
             :reins-count="reins_count_com"
             :level-ins-labels="level_ins_labels_com"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -425,11 +445,15 @@ const setData = (res) => {
       <VCard title="Inscriptions and réinscriptions par semaine">
         <VCardText>
           <CrmInsByPeriodHor
+            v-if="weeks.length > 0"
             :colors="chartJsCustomColors"
             :weeks="weeks"
             :ins="ins"
             :reins="reins"
           />
+          <div v-else style="height: 382px">
+            <imgEmpty></imgEmpty>
+          </div>
         </VCardText>
       </VCard>
     </VCol>
