@@ -29,3 +29,19 @@ syncConfigThemeWithVuetifyTheme();
     </VApp>
   </VLocaleProvider>
 </template>
+<style>
+@media print {
+  .layout-vertical-nav,
+  .layout-navbar {
+    display: none !important;
+  }
+
+  .layout-wrapper.layout-nav-type-vertical .layout-content-wrapper {
+    padding: 0 !important;
+  }
+
+  .page-content-container {
+    inline-size: 130%;
+  }
+}
+</style>

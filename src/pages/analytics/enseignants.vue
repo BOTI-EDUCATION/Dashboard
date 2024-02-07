@@ -3,6 +3,7 @@
     <VCard
       style="z-index: 1; overflow: inherit; height: 100px; padding: 10px"
       class="mb-3 sticky-nav"
+      id="navbar-filter"
     >
       <VRow class="align-items-center" style="justify-content: end">
         <VCol v-if="loaded" cols="12" md="2">
@@ -28,7 +29,15 @@
         </VCol>
       </VRow>
     </VCard>
-
+    <div class="me-3 print" style="width: 100%" v-show="activities.body.length">
+      <button
+        class="v-btn v-btn--elevated v-theme--dark bg-primary v-btn--density-default v-btn--size-default v-btn--variant-elevated"
+        style="display: block; margin-left: auto"
+        @click="exportPdf()"
+      >
+        Print
+      </button>
+    </div>
     <VCard v-if="loaded" style="padding: 10px" class="mb-3 sticky-nav mt-3">
       <VRow v-if="isLoading" class="align-items-center">
         <VCol cols="12" lg="12" style="position: relative; height: 50vh">
@@ -43,7 +52,7 @@
       <VTable
         v-if="!isLoading"
         class="text-no-wrap invoice-list-table"
-        style="max-height: 590px; overflow-y: auto"
+        style="width: 100%"
       >
         <thead class="text-uppercase">
           <tr>
@@ -124,7 +133,9 @@ onMounted(async () => {
 });
 const vuetifyTheme = useTheme();
 const currentTheme = vuetifyTheme.current.value.colors;
-
+let exportPdf = () => {
+  window.print();
+};
 // watch(cycle, async (newCycle, oldCycle) => {
 //   let link = "/filterNiveau?cycle=" + newCycle;
 //   await axiosIns
@@ -180,5 +191,20 @@ let searchEnseignantsActivities = async () => {
   border-radius: 10px;
   background-color: #e9e9e9;
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 30%);
+}
+
+@media print {
+  #navbar-filter {
+    display: none !important;
+  }
+
+  .invoice-list-table {
+    overflow: auto;
+    block-size: 100%;
+  }
+
+  .print {
+    display: none !important;
+  }
 }
 </style>
