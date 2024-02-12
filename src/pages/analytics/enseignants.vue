@@ -29,15 +29,29 @@
         </VCol>
       </VRow>
     </VCard>
-    <div class="me-3 print" style="width: 100%" v-show="activities.body.length">
-      <button
-        class="v-btn v-btn--elevated v-theme--dark bg-primary v-btn--density-default v-btn--size-default v-btn--variant-elevated"
-        style="display: block; margin-left: auto"
-        @click="exportPdf()"
-      >
-        Print
-      </button>
-    </div>
+    <VRow
+      class="align-items-center"
+      style="justify-content: end"
+      v-show="activities.body.length"
+    >
+      <VCol cols="12" md="4" sm="6" lg="3">
+        <button
+          class="v-btn v-btn--elevated v-theme--dark bg-primary v-btn--density-default v-btn--size-default v-btn--variant-elevated w-100"
+          @click="exportPdf()"
+        >
+          Print
+        </button>
+      </VCol>
+      <!-- 👉 Create invoice -->
+      <VCol cols="12" md="4" sm="6" lg="3">
+        <button
+          class="v-btn v-btn--elevated v-theme--dark bg-success v-btn--density-default v-btn--size-default v-btn--variant-elevated w-100"
+          @click="exportExcel()"
+        >
+          Export excel
+        </button>
+      </VCol>
+    </VRow>
     <VCard v-if="loaded" style="padding: 10px" class="mb-3 sticky-nav mt-3">
       <VRow v-if="isLoading" class="align-items-center">
         <VCol cols="12" lg="12" style="position: relative; height: 50vh">
@@ -169,6 +183,31 @@ let searchEnseignantsActivities = async () => {
     .finally(() => {
       loaded.value = true;
       isLoading.value = false;
+    });
+};
+let exportExcel = async () => {
+  await axiosIns
+    .post("/exportExcelDataEnsActivities", {
+      responseType: "blob",
+      params: {
+        site: site.value,
+        date: date.value,
+      },
+    })
+    .then((response) => {
+      const url = URL.createObjectURL(
+        new Blob([response.data.output], {
+          type: "application/vnd.ms-excel",
+        })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "enseignants_activities.xls");
+      document.body.appendChild(link);
+      link.click();
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };
 </script>
